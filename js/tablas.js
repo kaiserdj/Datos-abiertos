@@ -15,13 +15,16 @@ export function busqueda_tabla(datos) {
 
     let tbody = table.createTBody();
     datos.datasets.forEach(dato => {
+        console.log(dato);
         let id = dato.dataset.dataset_id;
         let fila = tbody.insertRow();
         let titulo = fila.insertCell();
         titulo.innerText = `${dato.dataset.metas.default.title}`;
         titulo.setAttribute("class", "mdl-data-table__cell--non-numeric");
         let tema = fila.insertCell();
-        tema.innerText = `${dato.dataset.metas.default.theme.toString()}`;
+        if(dato.dataset.metas.default.theme !== null){
+            tema.innerText = `${dato.dataset.metas.default.theme.toString()}`;
+        }        
         tema.setAttribute("class", "mdl-data-table__cell--non-numeric");
         let registros = fila.insertCell();
         registros.innerText = `${dato.dataset.metas.default.records_count}`;

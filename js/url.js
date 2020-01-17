@@ -1,6 +1,7 @@
-import {busqueda, datos} from "./page.js"
+import {base, busqueda, datos} from "./page.js"
 
 export async function detect_url() {
+    base();
     let url = new URL(location);
     let parm = new URLSearchParams(url.search);
     switch (parm.get("tipo")) {
@@ -24,7 +25,6 @@ export async function set_url(arg) {
     let parm = new URLSearchParams();
     if(typeof arg !== "undefined"){
         for(let par of arg){
-            alert(par);
             parm.set(par[0],par[1]);
         }
     }
