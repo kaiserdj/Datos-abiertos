@@ -1,9 +1,10 @@
 import {set_url} from "./url.js";
+import {detectar_enlace} from "./utils.js";
 
 export function busqueda_tabla(datos) {
     let table = document.createElement("table");
     table.setAttribute("border", "1");
-    table.setAttribute("class", "mdl-data-table mdl-js-data-table mdl-shadow--2dp");
+    table.setAttribute("class", "mdl-data-table mdl-js-data-table mdl-shadow--2dp table sortable draggable");
     let thead = table.createTHead();
     let row = thead.insertRow();
 
@@ -45,16 +46,17 @@ export function busqueda_tabla(datos) {
     return table;
 }
 
-export async function dato_abierto(datos) {
+export async function dato_abierto(meta, datos) {
+    console.log(meta);
     console.log(datos);
     let table = document.createElement("table");
     table.setAttribute("border", "1");
-    table.setAttribute("class", "mdl-data-table mdl-data-table--selectable mdl-js-data-table mdl-shadow--2dp");
+    table.setAttribute("class", "mdl-data-table mdl-data-table--selectable mdl-js-data-table mdl-shadow--2dp table sortable draggable");
     let thead = table.createTHead();
     let row = thead.insertRow();
 
     for(let titulo of Object.keys(datos[0])){
-        row.insertCell().outerHTML = `<th>${titulo}</th>`;
+        row.insertCell().outerHTML = `<th>${meta.fields.find(elem => elem.name === titulo).label.es}</th>`;
     }
 
     let tbody = table.createTBody();
@@ -63,7 +65,15 @@ export async function dato_abierto(datos) {
         let elementos = Object.keys(dato);
         let fila = tbody.insertRow();
         for(let elem of elementos){
-            fila.insertCell().innerText = dato[elem];
+            if(typeof dato[elem] === "string"){
+                if(dato[elem].search("href") === -1){
+                    fila.insertCell().innerHTML = await detectar_enlace(dato[elem]);
+                }else{
+                    fila.insertCell().innerHTML = dato[elem];
+                }                
+            }else{
+                fila.insertCell().innerText = dato[elem];
+            }
         }
     }
 

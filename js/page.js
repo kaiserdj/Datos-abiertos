@@ -1,6 +1,7 @@
 import {set_url} from "./url.js";
 import {carga_json} from "./carga.js";
 import {busqueda_tabla, dato_abierto} from "./tablas.js";
+import {externalLinks} from "./utils.js";
 
 export function base() {
     /* div base */
@@ -120,7 +121,6 @@ export async function busqueda(busqueda) {
 
     /* Carga de datos */
     let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets?search=${busqueda}&rows=10&pretty=false&timezone=UTC&include_app_metas=false`);
-    
     /* Dialog de busqueda no encontrada */
     if (Object.keys(datos.datasets).length === 0) {
         let dialog = document.createElement("dialog");
@@ -159,6 +159,8 @@ export async function busqueda(busqueda) {
     let tabla = busqueda_tabla(datos);
     document.getElementsByClassName("mdl-cell mdl-cell--9-col mdl-cell--8-col-tablet mdl-cell--4-col-phone table")[0].appendChild(tabla);
     componentHandler.upgradeDom();   
+    await dragtable();
+    await externalLinks();
 
     /* Input busqueda */
     var search = document.getElementById('busqueda');
@@ -206,9 +208,19 @@ export async function datos(id) {
     tabs.appendChild(div_mapa);
 
     /* Carga de datos */
+    let meta = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}?pretty=false&timezone=UTC&include_app_metas=false`);
     let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}/exports/json?rows=-1&pretty=false&timezone=UTC`);
-    let tabla = await dato_abierto(datos);
-    console.log(tabla);
+    let tabla = await dato_abierto(meta.dataset, datos);
     document.getElementById("tabla").appendChild(tabla);
     componentHandler.upgradeDom();
+    await dragtable();
+    await externalLinks();
+}
+
+export async function dragtable() {
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'js/dragtable.js';
+    head.appendChild(script);
 }
