@@ -7,7 +7,7 @@ export function busqueda_tabla(datos) {
     let thead = table.createTHead();
     let row = thead.insertRow();
 
-    let a = row.insertCell().outerHTML = `<th>Titulo</th>`;
+    row.insertCell().outerHTML = `<th>Titulo</th>`;
     row.insertCell().outerHTML = `<th>Tema</th>`;
     row.insertCell().outerHTML = `<th>Registros</th>`;
     row.insertCell().outerHTML = `<th></th>`;
@@ -47,4 +47,25 @@ export function busqueda_tabla(datos) {
 
 export async function dato_abierto(datos) {
     console.log(datos);
+    let table = document.createElement("table");
+    table.setAttribute("border", "1");
+    table.setAttribute("class", "mdl-data-table mdl-data-table--selectable mdl-js-data-table mdl-shadow--2dp");
+    let thead = table.createTHead();
+    let row = thead.insertRow();
+
+    for(let titulo of Object.keys(datos[0])){
+        row.insertCell().outerHTML = `<th>${titulo}</th>`;
+    }
+
+    let tbody = table.createTBody();
+
+    for(let dato of datos){
+        let elementos = Object.keys(dato);
+        let fila = tbody.insertRow();
+        for(let elem of elementos){
+            fila.insertCell().innerText = dato[elem];
+        }
+    }
+
+    return table;
 }

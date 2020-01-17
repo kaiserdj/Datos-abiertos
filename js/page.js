@@ -158,7 +158,7 @@ export async function busqueda(busqueda) {
     /* Carga de tabla */
     let tabla = busqueda_tabla(datos);
     document.getElementsByClassName("mdl-cell mdl-cell--9-col mdl-cell--8-col-tablet mdl-cell--4-col-phone table")[0].appendChild(tabla);
-    componentHandler.upgradeDom();
+    componentHandler.upgradeDom();   
 
     /* Input busqueda */
     var search = document.getElementById('busqueda');
@@ -174,14 +174,41 @@ export async function busqueda(busqueda) {
 }
 
 export async function datos(id) {
+    /* tabs */
+    let tabs = document.createElement("div");
+    tabs.setAttribute("class", "mdl-tabs mdl-js-tabs mdl-js-ripple-effect");
+    let main = document.getElementsByTagName("main")[0];
+    main.appendChild(tabs);
+    let tab_bar = document.createElement("div");
+    tab_bar.setAttribute("class", "mdl-tabs__tab-bar");
+    tabs.appendChild(tab_bar);
+    let a_tabla = document.createElement("a");
+    a_tabla.setAttribute("href", "#tabla");
+    a_tabla.setAttribute("class", "mdl-tabs__tab is-active");
+    a_tabla.innerText = "Tabla";
+    tab_bar.appendChild(a_tabla);
+    let a_mapa = document.createElement("a");
+    a_mapa.setAttribute("href", "#mapa");
+    a_mapa.setAttribute("class", "mdl-tabs__tab");
+    a_mapa.innerText = "Mapa";
+    tab_bar.appendChild(a_mapa);
+    
+    /* tab tabla */
+    let div_tabla = document.createElement("div");
+    div_tabla.setAttribute("class", "mdl-tabs__panel is-active");
+    div_tabla.setAttribute("id", "tabla");
+    tabs.appendChild(div_tabla);
+
+    /* tab mapa */
+    let div_mapa = document.createElement("div");
+    div_mapa.setAttribute("class", "mdl-tabs__panel");
+    div_mapa.setAttribute("id", "mapa");
+    tabs.appendChild(div_mapa);
+
     /* Carga de datos */
     let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}/exports/json?rows=-1&pretty=false&timezone=UTC`);
-    
-    let a = document.createElement("div");
-    a.innerText = JSON.stringify(datos);
-    let main = document.getElementsByTagName("main")[0];
-    main.appendChild(a);
-
-    dato_abierto(datos);
-    
+    let tabla = await dato_abierto(datos);
+    console.log(tabla);
+    document.getElementById("tabla").appendChild(tabla);
+    componentHandler.upgradeDom();
 }
