@@ -1,6 +1,6 @@
-import {carga_json} from "./carga.js";
+import {set_url} from "./url.js";
 
-export function busqueda(datos) {
+export function busqueda_tabla(datos) {
     let table = document.createElement("table");
     table.setAttribute("border", "1");
     table.setAttribute("class", "mdl-data-table mdl-js-data-table mdl-shadow--2dp");
@@ -33,7 +33,7 @@ export function busqueda(datos) {
         btn.value = "cargar";
         btn.onclick = (function (id) {
             return function () {
-                dato_abierto(id);
+                set_url([["tipo", "dato"],["valor", id]]);
             }
         })(id);
         boton_td.appendChild(btn);
@@ -42,8 +42,6 @@ export function busqueda(datos) {
     return table;
 }
 
-async function dato_abierto(id) {
-    let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}?pretty=false&timezone=UTC&include_app_metas=false`);
-
-    console.log(datos);    
+export async function dato_abierto(datos) {
+    console.log(datos);
 }
