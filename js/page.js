@@ -196,22 +196,25 @@ export async function datos(id) {
     tab_bar.appendChild(a_mapa);
     
     /* tab tabla */
+    let tab_tabla = document.createElement("div");
+    tab_tabla.setAttribute("class", "mdl-tabs__panel is-active");
+    tab_tabla.setAttribute("id", "tabla");
+    tabs.appendChild(tab_tabla);
     let div_tabla = document.createElement("div");
-    div_tabla.setAttribute("class", "mdl-tabs__panel is-active");
-    div_tabla.setAttribute("id", "tabla");
-    tabs.appendChild(div_tabla);
+    div_tabla.setAttribute("id", "div_tabla");
+    tab_tabla.appendChild(div_tabla);
 
     /* tab mapa */
-    let div_mapa = document.createElement("div");
-    div_mapa.setAttribute("class", "mdl-tabs__panel");
-    div_mapa.setAttribute("id", "mapa");
-    tabs.appendChild(div_mapa);
+    let tab_mapa = document.createElement("div");
+    tab_mapa.setAttribute("class", "mdl-tabs__panel");
+    tab_mapa.setAttribute("id", "mapa");
+    tabs.appendChild(tab_mapa);
 
     /* Carga de datos */
     let meta = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}?pretty=false&timezone=UTC&include_app_metas=false`);
     let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}/exports/json?rows=-1&pretty=false&timezone=UTC`);
     let tabla = await dato_abierto(meta.dataset, datos);
-    document.getElementById("tabla").appendChild(tabla);
+    document.getElementById("div_tabla").appendChild(tabla);
     componentHandler.upgradeDom();
     await dragtable();
     await externalLinks();

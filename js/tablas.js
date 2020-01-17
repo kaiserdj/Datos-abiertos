@@ -1,5 +1,5 @@
 import {set_url} from "./url.js";
-import {detectar_enlace} from "./utils.js";
+import {detectar_enlace, numero} from "./utils.js";
 
 export function busqueda_tabla(datos) {
     let table = document.createElement("table");
@@ -65,14 +65,18 @@ export async function dato_abierto(meta, datos) {
         let elementos = Object.keys(dato);
         let fila = tbody.insertRow();
         for(let elem of elementos){
+            let celda = fila.insertCell();
+            if(!numero(dato[elem])){
+                celda.setAttribute("class", "mdl-data-table__cell--non-numeric");
+            }
             if(typeof dato[elem] === "string"){
                 if(dato[elem].search("href") === -1){
-                    fila.insertCell().innerHTML = await detectar_enlace(dato[elem]);
+                    celda.innerHTML = await detectar_enlace(dato[elem]);
                 }else{
-                    fila.insertCell().innerHTML = dato[elem];
+                    celda.innerHTML = dato[elem];
                 }                
             }else{
-                fila.insertCell().innerText = dato[elem];
+                celda.innerText = dato[elem];
             }
         }
     }

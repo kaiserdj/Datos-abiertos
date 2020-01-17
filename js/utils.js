@@ -15,3 +15,7 @@ export async function externalLinks() {
             link.setAttribute("target", "_blank");
     }
 };
+
+export function numero (n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}

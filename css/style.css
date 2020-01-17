@@ -9,12 +9,15 @@
 }
 
 /* Tablas */
-.table {
-  overflow: auto !important;
+#div_tabla{
+  display: flex;
+  justify-content: center;
 }
 
-th {
-  text-align: center !important;
+table {
+  display: inline-block;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 @media only screen and (max-width: 480px) {
