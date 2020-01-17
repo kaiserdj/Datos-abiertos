@@ -37,10 +37,10 @@ export function base() {
     let titulo_movil = document.createElement("span");
     titulo_movil.setAttribute("class", "mdl-layout-title titulo");
     titulo_movil.innerText = "Datos abiertos";
-    movil.appendChild(titulo);
+    movil.appendChild(titulo_movil);
     let nav_movil = document.createElement("div");
     nav_movil.setAttribute("class", "mdl-navigation");
-    movil.appendChild(nav);
+    movil.appendChild(nav_movil);
     let link_movil = document.createElement("a");
     link_movil.setAttribute("class", "mdl-navigation__link");
     link_movil.setAttribute("href", "https://analisis.datosabiertos.jcyl.es/");
@@ -76,6 +76,14 @@ export function base() {
     let body = document.getElementsByTagName('body')[0];
     body.appendChild(layout);
     componentHandler.upgradeDom();
+
+    /* Event titulo */
+    var titulo_elem = document.getElementsByClassName("titulo");
+    for(let elem of titulo_elem){
+        elem.addEventListener('click', function (e) {
+            set_url();
+        });
+    }
 }
 
 export async function busqueda(busqueda) {
@@ -163,13 +171,6 @@ export async function busqueda(busqueda) {
     lupa.addEventListener('click', function (e) {
         set_url([["tipo", "busqueda"],["valor", search.value]]);
     });
-
-    var titulo = document.getElementsByClassName("titulo");
-    for(let elem of titulo){
-        elem.addEventListener('click', function (e) {
-            set_url();
-        });
-    }
 }
 
 export async function datos(id) {
