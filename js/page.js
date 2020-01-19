@@ -194,6 +194,10 @@ export async function datos(id) {
     a_mapa.setAttribute("class", "mdl-tabs__tab");
     a_mapa.innerText = "Mapa";
     tab_bar.appendChild(a_mapa);
+
+    /* Carga de datos */
+    let meta = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}?pretty=false&timezone=UTC&include_app_metas=false`);
+    let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}/exports/json?rows=-1&pretty=false&timezone=UTC`);
     
     /* tab tabla */
     let tab_tabla = document.createElement("div");
@@ -203,6 +207,10 @@ export async function datos(id) {
     let div_tabla = document.createElement("div");
     div_tabla.setAttribute("id", "div_tabla");
     tab_tabla.appendChild(div_tabla);
+    let tabla = await dato_abierto(meta.dataset, datos);
+    document.getElementById("div_tabla").appendChild(tabla);
+    await dragtable();
+    await externalLinks();
 
     /* tab mapa */
     let tab_mapa = document.createElement("div");
@@ -210,14 +218,7 @@ export async function datos(id) {
     tab_mapa.setAttribute("id", "mapa");
     tabs.appendChild(tab_mapa);
 
-    /* Carga de datos */
-    let meta = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}?pretty=false&timezone=UTC&include_app_metas=false`);
-    let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}/exports/json?rows=-1&pretty=false&timezone=UTC`);
-    let tabla = await dato_abierto(meta.dataset, datos);
-    document.getElementById("div_tabla").appendChild(tabla);
     componentHandler.upgradeDom();
-    await dragtable();
-    await externalLinks();
 }
 
 export async function dragtable() {

@@ -20,6 +20,11 @@ table {
   white-space: nowrap;
 }
 
+.table td {
+  overflow: auto;
+  max-width: 300px;
+}
+
 @media only screen and (max-width: 480px) {
 
   table, thead, tbody, th, td, tr {
@@ -37,11 +42,6 @@ table {
   .mdl-data-table tbody tr:nth-child(even) {
     background-color: #eee;
   }
-
-  /*.mdl-data-table td,
-  .mdl-data-table td:first-of-type {
-    padding-left: 50%;
-  }*/
 
   .mdl-data-table td:before {
     position: absolute;
@@ -139,7 +139,7 @@ table {
 .mdl-dialog {
   border: none;
   box-shadow: 0 9px 46px 8px rgba(0, 0, 0, 0.14), 0 11px 15px -7px rgba(0, 0, 0, 0.12), 0 24px 38px 3px rgba(0, 0, 0, 0.2);
-  width: 280px;
+  width: fit-content;
 }
 
 .mdl-dialog__title {
