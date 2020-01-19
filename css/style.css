@@ -8,6 +8,15 @@
   color: white;
 }
 
+/* titulo */
+.titulo{
+  cursor: pointer;
+}
+
+#lupa{
+  cursor: pointer;
+}
+
 /* Tablas */
 #div_tabla{
   display: flex;
@@ -25,25 +34,30 @@ table {
   max-width: 300px;
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 900px) {
 
-  table, thead, tbody, th, td, tr {
+  .mdl-cell table, .mdl-cell thead, .mdl-cell tbody, .mdl-cell th, .mdl-cell td, .mdl-cell tr {
       display: block;
   }
 
-  thead {
+  .mdl-cell thead {
     display: none;
   }
 
-  .mdl-data-table tbody tr {
+  .mdl-cell .mdl-data-table tbody tr {
     height: auto;
   }
   
-  .mdl-data-table tbody tr:nth-child(even) {
+  .mdl-cell .mdl-data-table tbody tr:nth-child(even) {
     background-color: #eee;
   }
 
-  .mdl-data-table td:before {
+  .mdl-data-table td {
+    height: initial;
+    max-width: initial;
+  }
+
+  .mdl-cell .mdl-data-table td:before {
     position: absolute;
     top: 6px;
     left: 6px;
@@ -58,11 +72,11 @@ table {
     font-size: 12px;
   }
   
-  .mdl-data-table td:last-of-type {
+  .mdl-cell .mdl-data-table td:last-of-type {
     padding-right: 18px;
   }
   
-  .mdl-data-table__cell--non-numeric.mdl-data-table__cell--non-numeric {
+  .mdl-cell .mdl-data-table__cell--non-numeric.mdl-data-table__cell--non-numeric {
     text-align: right;
 }
   
