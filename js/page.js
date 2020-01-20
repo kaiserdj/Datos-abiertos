@@ -1,7 +1,7 @@
 import {set_url} from "./url.js";
 import {carga_json} from "./carga.js";
 import {busqueda_tabla, dato_abierto} from "./tablas.js";
-import {externalLinks} from "./utils.js";
+import {externalLinks, egg} from "./utils.js";
 
 export function base() {
     /* div base */
@@ -69,8 +69,12 @@ export function base() {
     ul.setAttribute("class", "mdl-mini-footer__link-list");
     div_footer.appendChild(ul);
     let li = document.createElement("li");
+    li.setAttribute("id", "egg");
     li.innerText = "Hecho por Francisco Jesús";
     ul.appendChild(li);
+    li.addEventListener('click', function() {
+        egg();
+    });
 
 
     /* inyeción */
@@ -176,6 +180,9 @@ export async function busqueda(busqueda) {
 }
 
 export async function datos(id) {
+    let rows = 10;
+    let offset = 0;
+
     /* tabs */
     let tabs = document.createElement("div");
     tabs.setAttribute("class", "mdl-tabs mdl-js-tabs mdl-js-ripple-effect");
@@ -197,7 +204,7 @@ export async function datos(id) {
 
     /* Carga de datos */
     let meta = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}?pretty=false&timezone=UTC&include_app_metas=false`);
-    let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}/exports/json?rows=-1&pretty=false&timezone=UTC`);
+    let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}/exports/json?rows=${rows}&start=${offset}&pretty=false&timezone=UTC`);
     
     /* tab tabla */
     let tab_tabla = document.createElement("div");
@@ -212,6 +219,55 @@ export async function datos(id) {
     await dragtable();
     await externalLinks();
 
+    /* Ajustes tabla */
+    let aju = document.createElement("div");
+    aju.setAttribute("class", "aju");
+    tab_tabla.appendChild(aju);
+    /* Selector*/
+    let aju_chip = document.createElement("span");
+    aju_chip.setAttribute("class", "mdl-chip");
+    aju.appendChild(aju_chip);
+    let aju_text = document.createElement("span");
+    aju_text.setAttribute("class", "mdl-chip__text");
+    aju_text.innerText = "Numero de elementos:";
+    aju_chip.appendChild(aju_text);
+    let aju_divsel = document.createElement("div");
+    aju_divsel.setAttribute("class", "select");
+    aju.appendChild(aju_divsel);
+    let aju_select = document.createElement("select");
+    aju_select.setAttribute("name", "rows");
+    aju_select.setAttribute("id", "rows");
+    aju_divsel.appendChild(aju_select);
+    let aju_10 = document.createElement("option");
+    if(meta.dataset.metas.default.records_count > 10){
+        aju_10.setAttribute("value", "10");
+        aju_10.innerText = "10";
+        aju_select.appendChild(aju_10);
+        
+    }
+    let aju_20 = document.createElement("option");
+    if(meta.dataset.metas.default.records_count > 20){
+        aju_20.setAttribute("value", "20");
+        aju_20.innerText = "20";
+        aju_select.appendChild(aju_20);
+    }
+    let aju_100 = document.createElement("option");
+    if(meta.dataset.metas.default.records_count > 100){
+        aju_100.setAttribute("value", "100");
+        aju_100.innerText = "100";
+        aju_select.appendChild(aju_100);
+    }
+
+    let aju_0 = document.createElement("option");
+    aju_0.setAttribute("value", "-1");
+    aju_0.innerText = "Todo";
+    aju_select.appendChild(aju_0);
+
+    document.getElementById('rows').addEventListener('change', function() {
+        rows = this.value;
+        recargar_tabla(meta, "div_tabla", id, rows, offset);
+    });
+
     /* tab mapa */
     let tab_mapa = document.createElement("div");
     tab_mapa.setAttribute("class", "mdl-tabs__panel");
@@ -219,6 +275,14 @@ export async function datos(id) {
     tabs.appendChild(tab_mapa);
 
     componentHandler.upgradeDom();
+}
+
+export async function recargar_tabla(meta, select, id, rows, offset,) {
+    var tbl = document.getElementsByTagName("table")[0];
+    if(tbl) tbl.parentNode.removeChild(tbl);
+    let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}/exports/json?rows=${rows}&start=${offset}&pretty=false&timezone=UTC`);
+    let tabla = await dato_abierto(meta.dataset, datos);
+    document.getElementById(select).appendChild(tabla);
 }
 
 export async function dragtable() {

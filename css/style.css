@@ -9,16 +9,16 @@
 }
 
 /* titulo */
-.titulo{
+.titulo {
   cursor: pointer;
 }
 
-#lupa{
+#lupa {
   cursor: pointer;
 }
 
 /* Tablas */
-#div_tabla{
+#div_tabla {
   display: flex;
   justify-content: center;
 }
@@ -36,8 +36,13 @@ table {
 
 @media only screen and (max-width: 900px) {
 
-  .mdl-cell table, .mdl-cell thead, .mdl-cell tbody, .mdl-cell th, .mdl-cell td, .mdl-cell tr {
-      display: block;
+  .mdl-cell table,
+  .mdl-cell thead,
+  .mdl-cell tbody,
+  .mdl-cell th,
+  .mdl-cell td,
+  .mdl-cell tr {
+    display: block;
   }
 
   .mdl-cell thead {
@@ -47,7 +52,7 @@ table {
   .mdl-cell .mdl-data-table tbody tr {
     height: auto;
   }
-  
+
   .mdl-cell .mdl-data-table tbody tr:nth-child(even) {
     background-color: #eee;
   }
@@ -71,15 +76,15 @@ table {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 12px;
   }
-  
+
   .mdl-cell .mdl-data-table td:last-of-type {
     padding-right: 18px;
   }
-  
+
   .mdl-cell .mdl-data-table__cell--non-numeric.mdl-data-table__cell--non-numeric {
     text-align: right;
-}
-  
+  }
+
 }
 
 /* Boton busqueda */
@@ -149,6 +154,11 @@ table {
   color: #FFFFFF;
 }
 
+/* chip */
+.mdl-chip {
+  background-color: rgb(97, 97, 97);
+}
+
 /*Cuadro dialogos*/
 .mdl-dialog {
   border: none;
@@ -201,4 +211,68 @@ table {
 .mdl-dialog__content {
   padding: 20px 24px 24px 24px;
   color: rgba(0, 0, 0, 0.54);
+}
+
+/* Ajustes */
+.aju {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* pagination https://codepen.io/anon/pen/GJXzpJ */
+
+/* Select https://codepen.io/raubaca/pen/VejpQP */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #2c3e50;
+  background-image: none;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.select {
+  position: relative;
+  display: flex;
+  width: 7em;
+  height: 3em;
+  line-height: 3;
+  background: #2c3e50;
+  overflow: hidden;
+  border-radius: .25em;
+}
+
+select {
+  flex: 1;
+  padding: 0 .5em;
+  color: #fff;
+  cursor: pointer;
+}
+
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #34495e;
+  cursor: pointer;
+  pointer-events: none;
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+}
+
+.select:hover::after {
+  color: #f39c12;
 }
