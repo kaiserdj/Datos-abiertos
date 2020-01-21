@@ -159,6 +159,10 @@ table {
   background-color: rgb(97, 97, 97);
 }
 
+.mdl-chip:active {
+  background-color: rgb(97, 97, 97);
+}
+
 /*Cuadro dialogos*/
 .mdl-dialog {
   border: none;
@@ -222,8 +226,6 @@ table {
   padding-bottom: 10px;
 }
 
-/* pagination https://codepen.io/anon/pen/GJXzpJ */
-
 /* Select https://codepen.io/raubaca/pen/VejpQP */
 select {
   -webkit-appearance: none;
@@ -275,4 +277,44 @@ select {
 
 .select:hover::after {
   color: #f39c12;
+}
+
+/* pagination https://codepen.io/anon/pen/GJXzpJ */
+.pagination {
+  font-size: 20px;
+  text-align: center;
+  display: inline-block;
+}
+
+.pagination span {
+  height: 30px;
+  width: 30px;
+  color: rgba(0, 0, 0, .5);
+  transition: color 2s;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 30px;
+}
+
+.pagination span[active] {
+  background: #2196F3;
+  border-radius: 50%;
+  color: white;
+}
+
+.pagination span[active]:hover {
+  color: white;
+}
+
+.pagination span:hover {
+  color: rgba(0, 0, 0, 1);
+  transition: color 2s;
+}
+
+.pagination span:first-child {
+  margin-left: 10px;
+}
+
+.pagination span:last-child {
+  margin-right: 10px;
 }

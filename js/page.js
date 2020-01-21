@@ -1,6 +1,6 @@
 import {set_url} from "./url.js";
 import {carga_json} from "./carga.js";
-import {busqueda_tabla, dato_abierto} from "./tablas.js";
+import {busqueda_tabla, dato_abierto, aju_tabla, dragtable} from "./tablas.js";
 import {externalLinks, egg} from "./utils.js";
 
 export function base() {
@@ -180,8 +180,8 @@ export async function busqueda(busqueda) {
 }
 
 export async function datos(id) {
-    let rows = 10;
-    let offset = 0;
+    window.rows = 10;
+    window.offset = 0;
 
     /* tabs */
     let tabs = document.createElement("div");
@@ -191,6 +191,11 @@ export async function datos(id) {
     let tab_bar = document.createElement("div");
     tab_bar.setAttribute("class", "mdl-tabs__tab-bar");
     tabs.appendChild(tab_bar);
+    let a_datos = document.createElement("a");
+    a_datos.setAttribute("href", "#tabla");
+    a_datos.setAttribute("class", "mdl-tabs__tab is-active");
+    a_datos.innerText = "Datos generales";
+    tab_bar.appendChild(a_datos);
     let a_tabla = document.createElement("a");
     a_tabla.setAttribute("href", "#tabla");
     a_tabla.setAttribute("class", "mdl-tabs__tab is-active");
@@ -220,53 +225,7 @@ export async function datos(id) {
     await externalLinks();
 
     /* Ajustes tabla */
-    let aju = document.createElement("div");
-    aju.setAttribute("class", "aju");
-    tab_tabla.appendChild(aju);
-    /* Selector*/
-    let aju_chip = document.createElement("span");
-    aju_chip.setAttribute("class", "mdl-chip");
-    aju.appendChild(aju_chip);
-    let aju_text = document.createElement("span");
-    aju_text.setAttribute("class", "mdl-chip__text");
-    aju_text.innerText = "Numero de elementos:";
-    aju_chip.appendChild(aju_text);
-    let aju_divsel = document.createElement("div");
-    aju_divsel.setAttribute("class", "select");
-    aju.appendChild(aju_divsel);
-    let aju_select = document.createElement("select");
-    aju_select.setAttribute("name", "rows");
-    aju_select.setAttribute("id", "rows");
-    aju_divsel.appendChild(aju_select);
-    let aju_10 = document.createElement("option");
-    if(meta.dataset.metas.default.records_count > 10){
-        aju_10.setAttribute("value", "10");
-        aju_10.innerText = "10";
-        aju_select.appendChild(aju_10);
-        
-    }
-    let aju_20 = document.createElement("option");
-    if(meta.dataset.metas.default.records_count > 20){
-        aju_20.setAttribute("value", "20");
-        aju_20.innerText = "20";
-        aju_select.appendChild(aju_20);
-    }
-    let aju_100 = document.createElement("option");
-    if(meta.dataset.metas.default.records_count > 100){
-        aju_100.setAttribute("value", "100");
-        aju_100.innerText = "100";
-        aju_select.appendChild(aju_100);
-    }
-
-    let aju_0 = document.createElement("option");
-    aju_0.setAttribute("value", "-1");
-    aju_0.innerText = "Todo";
-    aju_select.appendChild(aju_0);
-
-    document.getElementById('rows').addEventListener('change', function() {
-        rows = this.value;
-        recargar_tabla(meta, "div_tabla", id, rows, offset);
-    });
+    await aju_tabla(tab_tabla, meta, "div_tabla", id);
 
     /* tab mapa */
     let tab_mapa = document.createElement("div");
@@ -275,20 +234,4 @@ export async function datos(id) {
     tabs.appendChild(tab_mapa);
 
     componentHandler.upgradeDom();
-}
-
-export async function recargar_tabla(meta, select, id, rows, offset,) {
-    var tbl = document.getElementsByTagName("table")[0];
-    if(tbl) tbl.parentNode.removeChild(tbl);
-    let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}/exports/json?rows=${rows}&start=${offset}&pretty=false&timezone=UTC`);
-    let tabla = await dato_abierto(meta.dataset, datos);
-    document.getElementById(select).appendChild(tabla);
-}
-
-export async function dragtable() {
-    var head = document.getElementsByTagName('head')[0];
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = 'js/dragtable.js';
-    head.appendChild(script);
 }
