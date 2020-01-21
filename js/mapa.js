@@ -62,4 +62,9 @@ export async function mapa(cord) {
     });
 
     map.addLayer(iconLayer);
+
+    /* Solucion temporal problema resize mapa - no se muestra */
+    setInterval(function() {
+        map.updateSize();
+    }, 1000);
 }
