@@ -192,8 +192,8 @@ export async function datos(id) {
     tab_bar.setAttribute("class", "mdl-tabs__tab-bar");
     tabs.appendChild(tab_bar);
     let a_datos = document.createElement("a");
-    a_datos.setAttribute("href", "#tabla");
-    a_datos.setAttribute("class", "mdl-tabs__tab is-active");
+    a_datos.setAttribute("href", "#datos");
+    a_datos.setAttribute("class", "mdl-tabs__tab");
     a_datos.innerText = "Datos generales";
     tab_bar.appendChild(a_datos);
     let a_tabla = document.createElement("a");
@@ -211,6 +211,13 @@ export async function datos(id) {
     let meta = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}?pretty=false&timezone=UTC&include_app_metas=false`);
     let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}/exports/json?rows=${rows}&start=${offset}&pretty=false&timezone=UTC`);
     
+    /* Datos generales */
+    let tab_datos = document.createElement("div");
+    tab_datos.setAttribute("class", "mdl-tabs__panel");
+    tab_datos.setAttribute("id", "datos");
+    tabs.appendChild(tab_datos);
+    
+
     /* tab tabla */
     let tab_tabla = document.createElement("div");
     tab_tabla.setAttribute("class", "mdl-tabs__panel is-active");
