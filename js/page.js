@@ -241,4 +241,5 @@ export async function datos(id) {
     tabs.appendChild(tab_mapa);
 
     componentHandler.upgradeDom();
+    componentHandler.upgradeElement(tabs);
 }
