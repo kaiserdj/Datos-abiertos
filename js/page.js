@@ -1,6 +1,8 @@
 import {set_url} from "./url.js";
 import {carga_json} from "./carga.js";
+import {gen_datos} from "./datos.js";
 import {busqueda_tabla, dato_abierto, aju_tabla, dragtable} from "./tablas.js";
+import {carga_mapa} from "./mapa.js";
 import {externalLinks, egg} from "./utils.js";
 
 
@@ -208,7 +210,7 @@ export async function datos(id) {
     tab_bar.appendChild(a_tabla);
     let a_mapa = document.createElement("a");
     a_mapa.setAttribute("href", "#mapa");
-    a_mapa.setAttribute("class", "mdl-tabs__tab");
+    a_mapa.setAttribute("class", "mdl-tabs__tab none");
     a_mapa.innerText = "Mapa";
     tab_bar.appendChild(a_mapa);
 
@@ -221,10 +223,8 @@ export async function datos(id) {
     tab_datos.setAttribute("class", "mdl-tabs__panel");
     tab_datos.setAttribute("id", "datos");
     tabs.appendChild(tab_datos);
-    let adsf = document.createElement("p");
-    adsf.innerText = "sadfasfasfjnagkjbdnfsgkjbndfskjgdfskjgnsdkjfgndfkjsgnjdfsngdjsfgn";
-    tab_datos.appendChild(adsf);
-    
+    let gen_dato = await gen_datos(meta);
+    tab_datos.appendChild(gen_dato);
 
     /* tab tabla */
     let tab_tabla = document.createElement("div");
@@ -243,16 +243,36 @@ export async function datos(id) {
     await aju_tabla(tab_tabla, meta, "div_tabla", id);
 
     /* tab mapa */
-    let tab_mapa = document.createElement("div");
-    tab_mapa.setAttribute("class", "mdl-tabs__panel");
-    tab_mapa.setAttribute("id", "mapa");
-    tabs.appendChild(tab_mapa);
+    if(meta.dataset.features.includes("geo")){
+        let tab_mapa = document.createElement("div");
+        tab_mapa.setAttribute("class", "mdl-tabs__panel");
+        tab_mapa.setAttribute("id", "mapa");
+        tabs.appendChild(tab_mapa);
+        let div_mapa = document.createElement("div");
+        div_mapa.setAttribute("id", "el_mapa");
+        tab_mapa.appendChild(div_mapa);
 
+        let cord = [];
+        for(let dato of datos){
+            cord.push(dato[meta.dataset.fields.find(search => search.type === "geo_point_2d").name]);
+        }
+        console.log(cord);
+        await carga_mapa(cord);
+    }else{
+        a_mapa.style.display = "none";
+    }
+
+    /* Actualizamos componentes mdl  */
     componentHandler.upgradeDom();
 
+    /* Parche bug mdl-tabs, se mantiene clase is-active cuando se cambia de tab */
     for (var i = 0; i < document.getElementsByClassName('mdl-tabs__ripple-container').length; i++) {
         document.getElementsByClassName('mdl-tabs__ripple-container')[i].addEventListener('click', function() {
-            componentHandler.upgradeElement(tabs);
+            for (var x = 0; x < document.getElementsByClassName('mdl-tabs__panel').length; x++) {
+                if(document.getElementsByClassName('mdl-tabs__panel')[x].getAttribute("class") === "mdl-tabs__panel is-active"){
+                    document.getElementsByClassName('mdl-tabs__panel')[x].setAttribute("class", "mdl-tabs__panel");
+                }
+            }
         });
     }
 }

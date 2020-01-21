@@ -50,9 +50,6 @@ export function busqueda_tabla(datos) {
 }
 
 export async function dato_abierto(meta, datos) {
-    console.log(meta);
-    console.log(datos);
-
     let table = document.createElement("table");
     table.setAttribute("border", "1");
     table.setAttribute("class", "mdl-data-table mdl-js-data-table mdl-shadow--2dp table sortable draggable");

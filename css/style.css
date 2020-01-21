@@ -320,3 +320,33 @@ select {
 .pagination span:last-child {
   margin-right: 10px;
 }
+
+/* Cartas */
+.carta{
+  background-color: #fff;
+  border-radius: 7px;
+  box-shadow: 0.3px 0.3px 0.3px 1px rgba(0, 0, 0, 0.2);
+  font-family: 'Roboto', sans-serif;
+}
+
+.titulo_carta, .dato_carta{
+  margin-left: 35px;
+}
+
+.titulo_carta{
+  color: gray;
+  padding-top: 15px;
+  font-size: 26px;
+}
+
+.dato_carta{
+  font-size: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  line-height: 20px;
+}
+
+.map {
+  height: 650px;
+  width: 1000px;
+}
