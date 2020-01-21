@@ -291,7 +291,7 @@ export async function recargar_nav(meta, div_pag, div_id, id) {
     /* paginacion */
     for(;num_pag<lim_pag;num_pag++){
         let span = document.createElement("span");
-        span.innerText = num_pag+1;
+        span.innerText = Math.trunc(num_pag)+1;
         span.setAttribute("class", "nav_boton");
         if(num_pag===(offset/rows)){
             span.setAttribute("active", "");
@@ -305,7 +305,7 @@ export async function recargar_nav(meta, div_pag, div_id, id) {
         puntos2.innerText = "...";
         div_pag.appendChild(puntos2);
         let span_ult = document.createElement("span");
-        span_ult.innerText = lim_meta/rows;
+        span_ult.innerText = Math.trunc(lim_meta/rows);
         span_ult.setAttribute("class", "nav_boton");
         div_pag.appendChild(span_ult);
     }
