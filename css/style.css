@@ -288,7 +288,9 @@ select {
 
 .pagination span {
   height: 30px;
-  width: 30px;
+  /*width: 30px;*/
+  padding-right: 7.5px;
+  padding-left: 7.5px;
   color: rgba(0, 0, 0, .5);
   transition: color 2s;
   cursor: pointer;
