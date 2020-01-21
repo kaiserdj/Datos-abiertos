@@ -1,5 +1,6 @@
 import {base, busqueda, datos} from "./page.js"
 
+/* Deteción posificón actual de la pagina */
 export async function detect_url() {
     base();
     let url = new URL(location);
@@ -19,7 +20,7 @@ export async function detect_url() {
     }
 }
 
-
+/* Generación de url con parametros */
 export async function set_url(arg) {
     let url = new URL(location);
     let parm = new URLSearchParams();

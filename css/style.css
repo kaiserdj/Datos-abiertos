@@ -226,7 +226,7 @@ table {
   padding-bottom: 10px;
 }
 
-/* Select https://codepen.io/raubaca/pen/VejpQP */
+/* Select */
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -279,7 +279,7 @@ select {
   color: #f39c12;
 }
 
-/* pagination https://codepen.io/anon/pen/GJXzpJ */
+/* pagination */
 .pagination {
   font-size: 20px;
   text-align: center;

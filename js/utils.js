@@ -1,5 +1,6 @@
 import {svg} from "./svg.js";
 
+/* Deteción de enlaces */
 export async function detectar_enlace(text) {
     var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
     return text.replace(urlRegex, function (url, b, c) {
@@ -8,6 +9,7 @@ export async function detectar_enlace(text) {
     })
 }
 
+/* Detectar enlaces e inyectar target _blank */
 export async function externalLinks() {
     var origin = window.location.origin;
     var a = document.getElementsByTagName("a");
@@ -18,10 +20,12 @@ export async function externalLinks() {
     }
 };
 
+/* Funcion para comprobar si es un numero */
 export function numero (n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
+/* easter egg */
 export function egg() {
     let dialog = document.createElement("dialog");
     dialog.setAttribute("class", "mdl-dialog");

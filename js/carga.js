@@ -1,3 +1,4 @@
+/* Funcion de recogida de ajax, adaptado para funciones asincronas */
 export function carga_json(url) {
     return new Promise((resolve, reject) => {
         let ajax = new XMLHttpRequest();

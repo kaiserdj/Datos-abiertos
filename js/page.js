@@ -3,6 +3,8 @@ import {carga_json} from "./carga.js";
 import {busqueda_tabla, dato_abierto, aju_tabla, dragtable} from "./tablas.js";
 import {externalLinks, egg} from "./utils.js";
 
+
+/* Funcion para generar la base de la web */
 export function base() {
     /* div base */
     let layout = document.createElement("div");
@@ -91,6 +93,7 @@ export function base() {
     }
 }
 
+/* Elementos para la pagina de busqueda */
 export async function busqueda(busqueda) {
     /* grid */
     let grid = document.createElement("div");
@@ -125,6 +128,7 @@ export async function busqueda(busqueda) {
 
     /* Carga de datos */
     let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets?search=${busqueda}&rows=10&pretty=false&timezone=UTC&include_app_metas=false`);
+
     /* Dialog de busqueda no encontrada */
     if (Object.keys(datos.datasets).length === 0) {
         let dialog = document.createElement("dialog");
@@ -166,7 +170,7 @@ export async function busqueda(busqueda) {
     await dragtable();
     await externalLinks();
 
-    /* Input busqueda */
+    /* Events Input busqueda */
     var search = document.getElementById('busqueda');
     search.addEventListener('keypress', function (e) {
         if (e.keyCode == 13) {
@@ -179,6 +183,7 @@ export async function busqueda(busqueda) {
     });
 }
 
+/* Elementos para la pagina de mostrar datos */
 export async function datos(id) {
     window.rows = 10;
     window.offset = 0;
@@ -216,6 +221,9 @@ export async function datos(id) {
     tab_datos.setAttribute("class", "mdl-tabs__panel");
     tab_datos.setAttribute("id", "datos");
     tabs.appendChild(tab_datos);
+    let adsf = document.createElement("p");
+    adsf.innerText = "sadfasfasfjnagkjbdnfsgkjbndfskjgdfskjgnsdkjfgndfkjsgnjdfsngdjsfgn";
+    tab_datos.appendChild(adsf);
     
 
     /* tab tabla */
@@ -241,5 +249,10 @@ export async function datos(id) {
     tabs.appendChild(tab_mapa);
 
     componentHandler.upgradeDom();
-    componentHandler.upgradeElement(tabs);
+
+    for (var i = 0; i < document.getElementsByClassName('mdl-tabs__ripple-container').length; i++) {
+        document.getElementsByClassName('mdl-tabs__ripple-container')[i].addEventListener('click', function() {
+            componentHandler.upgradeElement(tabs);
+        });
+    }
 }

@@ -171,6 +171,7 @@ export async function dialog_table(meta, datos) {
 
 
 export async function aju_tabla(apend, meta, div_id, id) {
+    /* div generico de ajustes */
     let aju = document.createElement("div");
     aju.setAttribute("class", "aju");
     apend.appendChild(aju);
@@ -230,7 +231,10 @@ export async function aju_tabla(apend, meta, div_id, id) {
     div_pag.setAttribute("class", "pagination");
     aju_chip3.appendChild(div_pag);
 
+    /* Generar paginación */
     recargar_nav(meta, div_pag, div_id, id);
+
+    /* Evento deteción de selector de numero de elementos */
     document.getElementById('rows').addEventListener('change', function() {
         window.rows = this.value;
         window.offset = 0;
@@ -239,6 +243,7 @@ export async function aju_tabla(apend, meta, div_id, id) {
     });
 }
 
+/* Funcion para recargar la tabla */
 export async function recargar_tabla(meta, select, id) {
     /* Limpiar tabla */
     var tbl = document.getElementsByTagName("table")[0];
@@ -254,6 +259,7 @@ export async function recargar_tabla(meta, select, id) {
     document.getElementById(select).appendChild(tabla);
 }
 
+/* Funcion para generar paginación */
 export async function recargar_nav(meta, div_pag, div_id, id) {
     /* Limpieza */
     document.getElementsByClassName("pagination")[0].innerHTML = "";
