@@ -37,7 +37,7 @@ export async function carta(grid, titulo, dato){
     }
 
     /* Comprobación y generación de un dato fecha */
-    if(!isNaN(Date.parse(dato))){
+    if(!isNaN(Date.parse(dato)) && titulo !== "records_count"){
         let options = { year: 'numeric', month: 'long', day: 'numeric' , hour: 'numeric', minute: 'numeric'};
         let fecha = new Date(dato);
         dato = fecha.toLocaleString("es-ES", options);
