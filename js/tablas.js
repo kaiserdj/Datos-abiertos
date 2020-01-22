@@ -337,6 +337,7 @@ export async function recargar_tabla(meta, select, id) {
     
     /* Inyectar tabla */
     document.getElementById(select).appendChild(tabla);
+    await dragtable();
 }
 
 /* Funcion para generar paginación */
