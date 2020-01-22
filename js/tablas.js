@@ -1,12 +1,16 @@
 import {carga_json} from "./carga.js";
 import {set_url} from "./url.js";
-import {detectar_enlace, numero} from "./utils.js";
+import {detectar_enlace} from "./utils.js";
 
+/* Funcion para generar la tabla de busqueda de datos abiertos */
 export function busqueda_tabla(datos) {
+    /* Creación elemento tabla */
     let table = document.createElement("table");
     table.setAttribute("border", "1");
     table.setAttribute("class", "mdl-data-table mdl-js-data-table mdl-shadow--2dp table sortable draggable");
     let thead = table.createTHead();
+
+    /* Titulos de la tabla*/
     let row = thead.insertRow();
 
     row.insertCell().outerHTML = `<th>Titulo</th>`;
@@ -14,21 +18,29 @@ export function busqueda_tabla(datos) {
     row.insertCell().outerHTML = `<th>Registros</th>`;
     row.insertCell().outerHTML = `<th></th>`;
 
+    /* Datos de la tabla */
     let tbody = table.createTBody();
     datos.datasets.forEach(dato => {
         let id = dato.dataset.dataset_id;
         let fila = tbody.insertRow();
+
+        /* Titulo de Dato */
         let titulo = fila.insertCell();
         titulo.innerText = `${dato.dataset.metas.default.title}`;
         titulo.setAttribute("class", "mdl-data-table__cell--non-numeric");
+
+        /* Tema del Dato */
         let tema = fila.insertCell();
         if (dato.dataset.metas.default.theme !== null) {
             tema.innerText = `${dato.dataset.metas.default.theme.toString()}`;
         }
         tema.setAttribute("class", "mdl-data-table__cell--non-numeric");
+
+        /* Numero de registros del Dato */
         let registros = fila.insertCell();
         registros.innerText = `${dato.dataset.metas.default.records_count}`;
 
+        /* Boton carga */
         let boton_td = fila.insertCell();
         let btn = document.createElement('input');
         btn.type = "button";
@@ -48,25 +60,31 @@ export function busqueda_tabla(datos) {
     return table;
 }
 
+/* Funcion para generar la tabla de datos abiertos */
 export async function dato_abierto(meta, datos) {
+    /* Creación elemento tabla */
     let table = document.createElement("table");
     table.setAttribute("border", "1");
     table.setAttribute("class", "mdl-data-table mdl-js-data-table mdl-shadow--2dp table sortable draggable");
     let thead = table.createTHead();
     let row = thead.insertRow();
 
+    /* Titulos de la tabla*/
     for (let titulo of Object.keys(datos[0])) {
         row.insertCell().outerHTML = `<th>${meta.fields.find(elem => elem.name === titulo).label.es}</th>`;
     }
 
     let tbody = table.createTBody();
 
+    /* Datos de la tabla */
     for (let dato of datos) {
         let elementos = Object.keys(dato);
         let fila = tbody.insertRow();
         for (let elem of elementos) {
             let celda = fila.insertCell();
             let type = meta.fields.find(search => search.name === elem).type;
+
+            /* Tipos de posibles datos */
             switch (type) {
                 case "int":
                 case "double":
@@ -112,6 +130,7 @@ export async function dato_abierto(meta, datos) {
 }
 
 export async function geo_shape(datos) {
+    /* Mostrar datos tratados en consola */
     console.clear();
     const style = [
         'background: #000',
@@ -123,12 +142,18 @@ export async function geo_shape(datos) {
     console.log(JSON.stringify(datos.geometry.coordinates));
     console.log('%c Si desea ver los elementos', style);
     console.info(datos.geometry.coordinates);
+
+    /* Creación de dialg */
     let dialog = document.createElement("dialog");
     dialog.setAttribute("class", "mdl-dialog");
+
+    /* Titulo dialog */
     let h4 = document.createElement("h4");
     h4.setAttribute("class", "mdl-dialog__title");
     h4.innerText = "Abre la consola(inspector de elementos)";
     dialog.appendChild(h4);
+
+    /* Boton dialog */
     let div = document.createElement("div");
     div.setAttribute("class", "mdl-dialog__actions");
     dialog.appendChild(div);
@@ -137,22 +162,28 @@ export async function geo_shape(datos) {
     button.setAttribute("class", "mdl-button close");
     button.innerText = "Cerrar";
     div.appendChild(button);
+
+    /* inyeción dialog */
     dialog.appendChild(div);
     let body = document.getElementsByTagName("body")[0];
     body.appendChild(dialog);
     dialog.showModal();
+
+    /* Funcion dialog */
     dialog.querySelector('.close').addEventListener('click', function () {
         dialog.remove();
     });
 }
 
 export async function geo_point_2d(meta, datos) {
+    /* Mostrar datos tratados en consola */
     console.log(
         '%c geo_point_2d',
         'font-size: 20px; background-color: yellow; color:red; margin-left: 20px;'
       );
     console.log(meta);
     console.log(datos);
+
     /* dialog */
     let dialog = document.createElement("dialog");
     dialog.setAttribute("class", "mdl-dialog");
