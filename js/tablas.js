@@ -16,7 +16,6 @@ export function busqueda_tabla(datos) {
 
     let tbody = table.createTBody();
     datos.datasets.forEach(dato => {
-        console.log(dato);
         let id = dato.dataset.dataset_id;
         let fila = tbody.insertRow();
         let titulo = fila.insertCell();
@@ -67,7 +66,8 @@ export async function dato_abierto(meta, datos) {
         let fila = tbody.insertRow();
         for (let elem of elementos) {
             let celda = fila.insertCell();
-            switch (meta.fields.find(search => search.name === elem).type) {
+            let type = meta.fields.find(search => search.name === elem).type;
+            switch (type) {
                 case "int":
                 case "double":
                     celda.innerText = dato[elem];
@@ -81,7 +81,11 @@ export async function dato_abierto(meta, datos) {
                     btn.value = "cargar";
                     btn.onclick = (function (meta, data) {
                         return function () {
-                            dialog_table(meta, data);
+                            if(type === "geo_point_2d"){
+                                geo_point_2d(meta, data);
+                            }else{
+                                geo_shape(data);
+                            }
                         }
                     })(meta.fields.find(search => search.name === elem), dato[elem]);
                     celda.appendChild(btn);
@@ -107,7 +111,46 @@ export async function dato_abierto(meta, datos) {
     return table;
 }
 
-export async function dialog_table(meta, datos) {
+export async function geo_shape(datos) {
+    console.clear();
+    const style = [
+        'background: #000',
+        'color: #fff',
+        'padding: 10px 20px',
+        'line-height: 35px'
+        ].join(';');
+    console.info('%c Si desea copiarlo', style);
+    console.log(JSON.stringify(datos.geometry.coordinates));
+    console.log('%c Si desea ver los elementos', style);
+    console.info(datos.geometry.coordinates);
+    let dialog = document.createElement("dialog");
+    dialog.setAttribute("class", "mdl-dialog");
+    let h4 = document.createElement("h4");
+    h4.setAttribute("class", "mdl-dialog__title");
+    h4.innerText = "Abre la consola(inspector de elementos)";
+    dialog.appendChild(h4);
+    let div = document.createElement("div");
+    div.setAttribute("class", "mdl-dialog__actions");
+    dialog.appendChild(div);
+    let button = document.createElement("button");
+    button.setAttribute("type", "button");
+    button.setAttribute("class", "mdl-button close");
+    button.innerText = "Cerrar";
+    div.appendChild(button);
+    dialog.appendChild(div);
+    let body = document.getElementsByTagName("body")[0];
+    body.appendChild(dialog);
+    dialog.showModal();
+    dialog.querySelector('.close').addEventListener('click', function () {
+        dialog.remove();
+    });
+}
+
+export async function geo_point_2d(meta, datos) {
+    console.log(
+        '%c geo_point_2d',
+        'font-size: 20px; background-color: yellow; color:red; margin-left: 20px;'
+      );
     console.log(meta);
     console.log(datos);
     /* dialog */
@@ -243,12 +286,21 @@ export async function aju_tabla(apend, meta, div_id, id) {
 /* Funcion para recargar la tabla */
 export async function recargar_tabla(meta, select, id) {
     /* Limpiar tabla */
-    var tbl = document.getElementsByTagName("table")[0];
+    let tbl = document.getElementsByTagName("table")[0];
     if(tbl) tbl.parentNode.removeChild(tbl);
 
     /* Cargar nuevos datos*/
     let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}/exports/json?rows=${rows}&start=${offset}&pretty=false&timezone=UTC`);
     
+    /* Console log de datos */
+    console.clear();
+    console.log(
+        '%c Datos tratados',
+        'font-size: 20px; background-color: yellow; color:red; margin-left: 20px;'
+      );
+    console.log(meta);
+    console.log(datos);
+
     /* Crear tabla */
     let tabla = await dato_abierto(meta.dataset, datos);
     
@@ -314,9 +366,9 @@ export async function recargar_nav(meta, div_pag, div_id, id) {
     }
 
     /* eventos */
-    for (var i = 0; i < document.getElementsByClassName('nav_boton').length; i++) {
+    for (let i = 0; i < document.getElementsByClassName('nav_boton').length; i++) {
         document.getElementsByClassName('nav_boton')[i].addEventListener('click', function() {
-            for(var i = 0; i < document.getElementsByClassName('nav_boton').length; i++){
+            for(let i = 0; i < document.getElementsByClassName('nav_boton').length; i++){
                 document.getElementsByClassName('nav_boton')[i].removeAttribute("active");
             }
             this.setAttribute("active", "");
@@ -328,8 +380,8 @@ export async function recargar_nav(meta, div_pag, div_id, id) {
 }
 
 export async function dragtable() {
-    var head = document.getElementsByTagName('head')[0];
-    var script = document.createElement('script');
+    let head = document.getElementsByTagName('head')[0];
+    let script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = 'js/dragtable.js';
     head.appendChild(script);

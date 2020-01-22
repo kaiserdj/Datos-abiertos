@@ -6,8 +6,8 @@ export async function carga_mapa(cord) {
     mapa_.setAttribute("id", "map");
     div_.appendChild(mapa_);
 
-    var head2 = document.getElementsByTagName('body')[0];
-    var script2 = document.createElement('script');
+    let head2 = document.getElementsByTagName('body')[0];
+    let script2 = document.createElement('script');
     script2.type = 'text/javascript';
     script2.src = 'https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js';
     head2.appendChild(script2);
@@ -16,7 +16,7 @@ export async function carga_mapa(cord) {
 }
 
 export async function mapa(cord) {
-    var map = new ol.Map({
+    let map = new ol.Map({
         target: 'map',
         layers: [
             new ol.layer.Tile({
@@ -29,20 +29,20 @@ export async function mapa(cord) {
         })
     });
 
-    var puntos = [];
+    let puntos = [];
 
     for(let pos of cord){
-        var iconFeature = new ol.Feature({
+        let iconFeature = new ol.Feature({
             geometry: new ol.geom.Point(ol.proj.transform([pos.lon, pos.lat], 'EPSG:4326', 'EPSG:3857'))
         });
         puntos.push(iconFeature);
     }
 
-    var iconLayerSource = new ol.source.Vector({
+    let iconLayerSource = new ol.source.Vector({
         features: puntos 
     });
 
-    var iconLayer = new ol.layer.Vector({
+    let iconLayer = new ol.layer.Vector({
         source: iconLayerSource,
         style: new ol.style.Style({
             image: new ol.style.Icon({
@@ -54,10 +54,10 @@ export async function mapa(cord) {
     });
 
     map.on('click', function (evt) {
-        var coords = ol.proj.toLonLat(evt.coordinate);
-        var lat = coords[1];
-        var lon = coords[0];
-        var locTxt = "Latitude: " + lat + " Longitude: " + lon;
+        let coords = ol.proj.toLonLat(evt.coordinate);
+        let lat = coords[1];
+        let lon = coords[0];
+        let locTxt = "Latitude: " + lat + " Longitude: " + lon;
         console.log(locTxt);
     });
 

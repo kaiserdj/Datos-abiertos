@@ -87,7 +87,7 @@ export function base() {
     componentHandler.upgradeDom();
 
     /* Event titulo */
-    var titulo_elem = document.getElementsByClassName("titulo");
+    let titulo_elem = document.getElementsByClassName("titulo");
     for(let elem of titulo_elem){
         elem.addEventListener('click', function (e) {
             set_url();
@@ -130,6 +130,13 @@ export async function busqueda(busqueda) {
 
     /* Carga de datos */
     let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets?search=${busqueda}&rows=10&pretty=false&timezone=UTC&include_app_metas=false`);
+    
+    /* Console log de datos */
+    console.log(
+        '%c Datos tratados',
+        'font-size: 20px; background-color: yellow; color:red; margin-left: 20px;'
+      );
+    console.log(datos);
 
     /* Dialog de busqueda no encontrada */
     if (Object.keys(datos.datasets).length === 0) {
@@ -173,13 +180,13 @@ export async function busqueda(busqueda) {
     await externalLinks();
 
     /* Events Input busqueda */
-    var search = document.getElementById('busqueda');
+    let search = document.getElementById('busqueda');
     search.addEventListener('keypress', function (e) {
         if (e.keyCode == 13) {
             set_url([["tipo", "busqueda"],["valor", search.value]]);
         }
     });
-    var lupa = document.getElementById('lupa');
+    let lupa = document.getElementById('lupa');
     lupa.addEventListener('click', function (e) {
         set_url([["tipo", "busqueda"],["valor", search.value]]);
     });
@@ -218,6 +225,14 @@ export async function datos(id) {
     let meta = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}?pretty=false&timezone=UTC&include_app_metas=false`);
     let datos = await carga_json(`https://analisis.datosabiertos.jcyl.es/api/v2/catalog/datasets/${id}/exports/json?rows=${rows}&start=${offset}&pretty=false&timezone=UTC`);
     
+    /* Console log de datos */
+    console.log(
+        '%c Datos tratados',
+        'font-size: 20px; background-color: yellow; color:red; margin-left: 20px;'
+      );
+    console.log(meta);
+    console.log(datos);
+
     /* Datos generales */
     let tab_datos = document.createElement("div");
     tab_datos.setAttribute("class", "mdl-tabs__panel");
@@ -256,7 +271,6 @@ export async function datos(id) {
         for(let dato of datos){
             cord.push(dato[meta.dataset.fields.find(search => search.type === "geo_point_2d").name]);
         }
-        console.log(cord);
         await carga_mapa(cord);
     }else{
         a_mapa.style.display = "none";
@@ -266,9 +280,9 @@ export async function datos(id) {
     componentHandler.upgradeDom();
 
     /* Parche bug mdl-tabs, se mantiene clase is-active cuando se cambia de tab */
-    for (var i = 0; i < document.getElementsByClassName('mdl-tabs__ripple-container').length; i++) {
+    for (let i = 0; i < document.getElementsByClassName('mdl-tabs__ripple-container').length; i++) {
         document.getElementsByClassName('mdl-tabs__ripple-container')[i].addEventListener('click', function() {
-            for (var x = 0; x < document.getElementsByClassName('mdl-tabs__panel').length; x++) {
+            for (let x = 0; x < document.getElementsByClassName('mdl-tabs__panel').length; x++) {
                 if(document.getElementsByClassName('mdl-tabs__panel')[x].getAttribute("class") === "mdl-tabs__panel is-active"){
                     document.getElementsByClassName('mdl-tabs__panel')[x].setAttribute("class", "mdl-tabs__panel");
                 }
